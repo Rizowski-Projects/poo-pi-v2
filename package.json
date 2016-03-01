@@ -9,6 +9,9 @@
     "prestart": "npm run build",
     "start": "node index.js"
   },
+  "config":{
+    "production": false
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Rizowski-Projects/poo-pi-v2.git"
