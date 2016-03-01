@@ -1,0 +1,47 @@
+{
+  "name": "y",
+  "version": "0.0.0",
+  "description": "A poo pi application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel -d build src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rizowski-Projects/poo-pi-v2.git"
+  },
+  "keywords": [
+    "rpi"
+  ],
+  "author": "Colten Rouska",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rizowski-Projects/poo-pi-v2/issues"
+  },
+  "homepage": "https://github.com/Rizowski-Projects/poo-pi-v2#readme",
+  "devDependencies": {
+    "babel-cli": "^6.6.0",
+    "babel-core": "^6.6.0",
+    "babel-eslint": "^5.0.0",
+    "babel-plugin-transform-regenerator": "^6.6.0",
+    "babel-preset-es2015-node4": "^2.0.3",
+    "chai": "^3.5.0",
+    "eslint": "^2.2.0",
+    "eslint-watch": "^2.1.10",
+    "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "blipp": "^2.3.0",
+    "chalk": "^1.1.1",
+    "good": "^6.6.0",
+    "good-console": "^5.3.1",
+    "hapi": "^13.0.0",
+    "hapi-router": "^3.4.1",
+    "hapi-swaggered": "^2.6.0",
+    "hapi-swaggered-ui": "^2.3.1",
+    "lodash": "^4.5.1",
+    "mod.js": "^1.0.4",
+    "moment": "^2.11.2"
+  }
+}
