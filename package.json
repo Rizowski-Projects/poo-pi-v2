@@ -12,6 +12,9 @@
     "predev": "npm run prestart",
     "dev": "NODE_ENV=local node index.js | bunyan"
   },
+  "engines":{
+    "node": ">=4"
+  },
   "config": {
     "production": false
   },
