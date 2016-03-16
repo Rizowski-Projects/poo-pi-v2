@@ -1,4 +1,3 @@
-//headers Bearer ede63e2d096afc516d031e812163633e42ec9aa9
 import _ from 'lodash';
 import boom from 'boom';
 
