@@ -1,5 +1,6 @@
 import good from 'good';
-import goodConsole from 'good-console';
+import { appLogger as logger } from '../logger';
+import goodBunyan from 'good-bunyan';
 
 export default {
   register: good,
@@ -7,7 +8,17 @@ export default {
     opsInterval: 5000,
     requestHeaders: true,
     reporters: [{
-      reporter: goodConsole,
+      reporter: goodBunyan,
+      config:{
+        logger,
+        levels: {
+          ops: 'debug',
+          response: 'info',
+          log: 'info',
+          error: 'error',
+          request: 'info'
+        }
+      },
       events: {
         response: '*',
         log: '*',
