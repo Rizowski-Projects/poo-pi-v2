@@ -1,10 +1,9 @@
 {
-  "env": {
-    "node": true,
+  "parser": "babel-eslint",
+  "env":{
     "es6": true
   },
-  "parser": "babel-eslint",
-  "ecmaFeatures": {
-    "modules": true
+  "parserOptions": {
+    "sourceType": "module"
   }
 }

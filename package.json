@@ -1,15 +1,18 @@
 {
-  "name": "y",
+  "name": "poopi-v2",
   "version": "0.0.0",
   "description": "A poo pi application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel -d build src",
-    "prestart": "npm run build",
-    "start": "node index.js"
+    "build": "babel -d build src -s inline",
+    "prepublish": "npm run build",
+    "prestart": "rm -rf build && npm run build",
+    "start": "node index.js | bunyan",
+    "predev": "npm run prestart",
+    "dev": "NODE_ENV=local node index.js | bunyan"
   },
-  "config":{
+  "config": {
     "production": false
   },
   "repository": {
@@ -29,15 +32,26 @@
     "babel-cli": "^6.6.0",
     "babel-core": "^6.6.0",
     "babel-eslint": "^5.0.0",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-add-module-exports": "^0.1.2",
     "babel-plugin-transform-regenerator": "^6.6.0",
     "babel-preset-es2015-node4": "^2.0.3",
     "chai": "^3.5.0",
     "eslint": "^2.2.0",
+    "eslint-plugin-react": "^4.2.1",
     "eslint-watch": "^2.1.10",
-    "mocha": "^2.4.5"
+    "jsx-loader": "^0.13.2",
+    "mocha": "^2.4.5",
+    "nodemon": "^1.9.1",
+    "source-map-support": "^0.4.0",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "babel-polyfill": "^6.7.2",
     "blipp": "^2.3.0",
+    "bluebird": "^3.3.4",
+    "bunyan": "^1.7.1",
     "chalk": "^1.1.1",
     "good": "^6.6.0",
     "good-console": "^5.3.1",
@@ -45,8 +59,11 @@
     "hapi-router": "^3.4.1",
     "hapi-swaggered": "^2.6.0",
     "hapi-swaggered-ui": "^2.3.1",
+    "inert": "^3.2.0",
+    "joi": "^8.0.4",
     "lodash": "^4.5.1",
     "mod.js": "^1.0.4",
-    "moment": "^2.11.2"
+    "moment": "^2.11.2",
+    "vision": "^4.0.1"
   }
 }

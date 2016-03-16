@@ -1,46 +1,19 @@
-const Hapi = require('hapi');
-const Good = require('good');
+require('babel-polyfill');
+try {
+  require('source-map-support');
+} catch (e) { }
+import { Server } from 'hapi';
+import Good from 'good';
+import path from 'path';
+import registerPlugins from './plugins';
+import { appLogger } from './logger';
 
-const server = new Hapi.Server();
+const server = new Server();
+
 server.connection({ port: process.env.PORT || 3000 });
 
-server.route({
-  method: 'GET',
-  path: '/',
-  handler: function (request, reply) {
-    reply('Hello, world!');
-  }
-});
-
-server.route({
-  method: 'GET',
-  path: '/{name}',
-  handler: function (request, reply) {
-    reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
-  }
-});
-
-server.register({
-  register: Good,
-  options: {
-    reporters: [{
-      reporter: require('good-console'),
-      events: {
-        response: '*',
-        log: '*'
-      }
-    }]
-  }
-}, (err) => {
-
-  if (err) {
-    throw err; // something bad happened loading the plugin
-  }
-
-  server.start((err) => {
-    if (err) {
-     throw err;
-    }
-    server.log('info', 'Server running at: ' + server.info.uri);
-  });
-});
+registerPlugins(server)
+  .then(server => {
+    appLogger.info(`Server running at: ${server.info.uri}`);
+    return server.start().then(() => server);
+  }).catch(e => console.error(e.stack || e));

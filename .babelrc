@@ -1,4 +1,4 @@
 {
   "presets": ["es2015-node4"],
-  "plugins" : ["transform-regenerator"]
+  "plugins" : ["add-module-exports"]
 }
