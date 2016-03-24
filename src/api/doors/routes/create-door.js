@@ -1,4 +1,5 @@
 import joi from 'joi';
+import manager from '../managers/door-manager';
 
 export default {
   method: 'POST',
@@ -8,6 +9,8 @@ export default {
     tags: ['api', 'doors'],
   },
   handler: (req, res) => {
-    return res('it twerks');
+    const response = manager.createDoor(req.payload)
+      .then(() => req.generateResponse().code(201));
+    return res(response);
   }
 }
