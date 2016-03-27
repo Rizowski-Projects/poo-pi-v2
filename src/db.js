@@ -13,22 +13,18 @@ let dbActions = {
   createTable: (name) => rethink.tableCreate(name)
 };
 
-// function runOnTable(tableName, action){
-//   return runOn('table')(tableName, action);
-// }
-
 let runOnTable = runOn('table');
 
 function runOn(entity) {
   return (entityName, action) => action(rethink[entity](entityName)).run(connection);
 }
 
-function getTable(tableName){
-  return rethink.table(tableName);
-}
-
 function run(action){
   return action.run(connection);
+}
+
+function getTableData(tableName){
+  return run(rethink.table(tableName).coerceTo('array'));
 }
 
 function printError(e){
@@ -37,8 +33,8 @@ function printError(e){
 
 export default async (s) =>{
   connection = await rethink.connect({ host: process.env.DB_HOST, port: 32772 }).catch(printError);
-  await run(dbActions.createDb(dbName)).catch(printError);
+  await run(dbActions.createDb(dbName)).catch((e) => logger.warn(e.msg));
   return s;
 };
 
-export { run, dbActions, runOnTable };
+export { run, dbActions, runOnTable, getTableData };

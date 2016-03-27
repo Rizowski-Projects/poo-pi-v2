@@ -1,4 +1,5 @@
 import joi from 'joi';
+import manager from '../managers/door-manager';
 
 export default {
   method: 'GET',
@@ -8,6 +9,7 @@ export default {
     tags: ['api', 'doors'],
   },
   handler: (req, res) => {
-    return res('it twerks');
+    const response = manager.getAll();
+    return res(response);
   }
 }

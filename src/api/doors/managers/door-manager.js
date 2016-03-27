@@ -1,4 +1,4 @@
-import { run, dbActions, runOnTable } from '../../../db';
+import { run, dbActions, runOnTable, getTableData } from '../../../db';
 import createLogger from '../../../logger';
 const logger = createLogger('door-manager');
 
@@ -13,6 +13,9 @@ const tableActions = {
     return runOnTable(tableName, (table) => {
       return table.insert(obj);
     });
+  },
+  getAll: () =>{
+    return getTableData(tableName);
   }
 }
 
@@ -20,12 +23,15 @@ const tableActions = {
 export default {
   createDoor: (door) => {
     //some validation
-    return tableActions.createDoor({ name: 'door1', type: 'not-working' });
+    return tableActions.createDoor(door);
   },
   updateStatus: (id, status) => {
 
   },
   deleteDoor: (id) =>{
 
+  },
+  getAll: () =>{
+    return tableActions.getAll();
   }
 }
