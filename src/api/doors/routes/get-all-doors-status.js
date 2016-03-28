@@ -9,7 +9,7 @@ export default {
     tags: ['api', 'doors', 'status'],
   },
   handler: (req, res) => {
-    const response = manager.getAll();
+    const response = manager.getStatuses();
     return res(response);
   }
 }

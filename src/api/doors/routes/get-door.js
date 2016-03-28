@@ -1,12 +1,6 @@
 import joi from 'joi';
-
-function fakeOpen(){
-  let min = 1;
-  let max = 10;
-  let rand = Math.floor(Math.random() * (max - min + 1)) + min;
-  let result = rand % 2;
-  return result === 0;
-}
+import manager from '../managers/door-manager';
+import id from '../schemas/id';
 
 export default {
   method: 'GET',
@@ -16,15 +10,12 @@ export default {
     tags: ['api', 'doors'],
     validate: {
       params:{
-        doorNumber: joi.number().required()
+        id
       }
     }
   },
   handler: (req, res) => {
-    return res({
-      doorNumber: req.params.id,
-      gender: 'female',
-      open: fakeOpen()
-    });
+    const door = manager.getDoor(req.params.id);
+    return res(door);
   }
 }

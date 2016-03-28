@@ -16,23 +16,23 @@ const tableActions = {
   createDoor: (obj) => runOnDoors(table => table.insert(obj)),
   getAll: () => runOnDoors(table => table.coerceTo('array')),
   delete: (id) => runOnDoors(table => table.get(id).delete()),
-  getStatus: (id) => runOnDoors(table => table.get(id))
+  getDoor: (id) => runOnDoors(table => table.get(id)),
+  update: (id, obj) => runOnDoors(table => table.get(id).update(obj))
 };
 
 export default {
   createDoor: (door) => tableActions.createDoor(door),
-  updateStatus: (id, status) => {  },
-  deleteDoor: (id) => tableActions.delete(id),
   getAll: () => tableActions.getAll(),
   getStatuses: () =>{
     return tableActions.getAll().map(d =>{
       return {
         id: d.id,
-        status: d.open
+        status: d.status
       }
     })
   },
-  getStatus: (id) => tableActions.getStatus(id)
-    .then(d => { status: d.status }),
-  delete: (id) => tableActions.delete(id),
+  getStatus: (id) => tableActions.getDoor(id).then(d => ({ status: d.status })),
+  delete: (id) => runOnDoors(table => table.get(id).delete()),
+  update: tableActions.update,
+  getDoor: tableActions.getDoor
 }

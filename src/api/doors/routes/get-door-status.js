@@ -15,10 +15,7 @@ export default {
     }
   },
   handler: (req, res) => {
-    let result = manager.getStatus(req.params.id).then(d => {
-      console.log(d.status);
-      return { status: d.status };
-    });
+    let result = manager.getStatus(req.params.id);
     return res(result);
   }
 }
