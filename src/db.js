@@ -38,7 +38,7 @@ function printError(e){
 }
 
 export default async (s) =>{
-  connection = await rethink.connect({ host: process.env.DB_HOST, port: 32772 }).catch(printError);
+  connection = await rethink.connect({ host: process.env.DB_HOST, port: process.env.DB_PORT }).catch(printError);
   await run(dbActions.createDb(dbName)).catch((e) => logger.warn(e.msg));
   return s;
 };
