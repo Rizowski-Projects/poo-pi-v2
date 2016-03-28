@@ -1,5 +1,5 @@
 import joi from 'joi';
-import gender from '../schemas/genders';
+import door from '../schemas/door';
 import manager from '../managers/door-manager';
 
 export default {
@@ -9,11 +9,7 @@ export default {
     description: 'Create doors',
     tags: ['api', 'doors'],
     validate: {
-      payload: joi.object({
-        name: joi.string().min(3).max(32),
-        gender,
-        open: joi.boolean()
-      })
+      payload: door
     }
   },
   handler: (req, res) => {

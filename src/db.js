@@ -15,12 +15,18 @@ let dbActions = {
 
 let runOnTable = runOn('table');
 
-function runOn(entity) {
-  return (entityName, action) => action(rethink[entity](entityName)).run(connection);
-}
-
 function run(action){
   return action.run(connection);
+}
+
+function runOn(entity) {
+  return (entityName, action) => {
+    logger.info('TableNameOrDbName:', entityName);
+    logger.info('dbOrTable:', entity);
+    let tableOrDb = rethink[entity](entityName);
+    let a = action(tableOrDb);
+    return run(a);
+  };
 }
 
 function getTableData(tableName){

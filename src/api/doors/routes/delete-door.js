@@ -1,4 +1,5 @@
 import joi from 'joi';
+import manager from '../managers/door-manager';
 
 export default {
   method: 'DELETE',
@@ -6,8 +7,14 @@ export default {
   config:{
     description: 'Deletes a door',
     tags: ['api', 'doors'],
+    validate: {
+      params: {
+        id: joi.string().guid().label('id')
+      }
+    }
   },
   handler: (req, res) => {
-    return res('it twerks');
+    const result = manager.delete(req.params.id);
+    return res(result);
   }
 }

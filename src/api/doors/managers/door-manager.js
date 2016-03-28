@@ -16,22 +16,30 @@ const tableActions = {
   },
   getAll: () =>{
     return getTableData(tableName);
+  },
+  delete: (id) =>{
+    return runOnTable(tableName, (table) =>{
+      let action = table.get(id);
+      return action.delete();
+    });
   }
-}
+};
 
 
 export default {
-  createDoor: (door) => {
-    //some validation
-    return tableActions.createDoor(door);
-  },
+  createDoor: (door) => tableActions.createDoor(door),
   updateStatus: (id, status) => {
 
   },
-  deleteDoor: (id) =>{
-
+  deleteDoor: (id) => tableActions.delete(id),
+  getAll: () => tableActions.getAll(),
+  getStatuses: () =>{
+    return tableActions.getAll().map(d =>{
+      return {
+        id: d.id,
+        status: d.open
+      }
+    })
   },
-  getAll: () =>{
-    return tableActions.getAll();
-  }
+  delete: (id) => tableActions.delete(id)
 }
