@@ -20,17 +20,7 @@ function run(action){
 }
 
 function runOn(entity) {
-  return (entityName, action) => {
-    logger.info('TableNameOrDbName:', entityName);
-    logger.info('dbOrTable:', entity);
-    let tableOrDb = rethink[entity](entityName);
-    let a = action(tableOrDb);
-    return run(a);
-  };
-}
-
-function getTableData(tableName){
-  return run(rethink.table(tableName).coerceTo('array'));
+  return (entityName, action) => run(action(rethink[entity](entityName)));
 }
 
 function printError(e){
@@ -43,4 +33,4 @@ export default async (s) =>{
   return s;
 };
 
-export { run, dbActions, runOnTable, getTableData };
+export { run, dbActions, runOnTable };

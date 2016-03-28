@@ -1,5 +1,6 @@
 import joi from 'joi';
 import manager from '../managers/door-manager';
+import id from '../schemas/id';
 
 export default {
   method: 'DELETE',
@@ -9,7 +10,7 @@ export default {
     tags: ['api', 'doors'],
     validate: {
       params: {
-        id: joi.string().guid().label('id')
+        id
       }
     }
   },

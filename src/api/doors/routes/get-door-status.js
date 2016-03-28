@@ -1,4 +1,6 @@
 import joi from 'joi';
+import id from '../schemas/id';
+import manager from '../managers/door-manager';
 
 export default {
   method: 'GET',
@@ -6,8 +8,17 @@ export default {
   config:{
     description: 'Gets a door\'s status',
     tags: ['api', 'doors', 'status'],
+    validate: {
+      params: {
+        id
+      }
+    }
   },
   handler: (req, res) => {
-    return res('it twerks');
+    let result = manager.getStatus(req.params.id).then(d => {
+      console.log(d.status);
+      return { status: d.status };
+    });
+    return res(result);
   }
 }

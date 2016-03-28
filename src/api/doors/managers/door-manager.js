@@ -1,4 +1,4 @@
-import { run, dbActions, runOnTable, getTableData } from '../../../db';
+import { run, dbActions, runOnTable } from '../../../db';
 import createLogger from '../../../logger';
 const logger = createLogger('door-manager');
 
@@ -8,29 +8,20 @@ const tableName = 'doors';
   await run(dbActions.createTable(tableName)).catch(e => logger.warn(e.msg));
 })();
 
-const tableActions = {
-  createDoor: (obj) =>{
-    return runOnTable(tableName, (table) => {
-      return table.insert(obj);
-    });
-  },
-  getAll: () =>{
-    return getTableData(tableName);
-  },
-  delete: (id) =>{
-    return runOnTable(tableName, (table) =>{
-      let action = table.get(id);
-      return action.delete();
-    });
-  }
-};
+function runOnDoors(action){
+  return runOnTable(tableName, action);
+}
 
+const tableActions = {
+  createDoor: (obj) => runOnDoors(table => table.insert(obj)),
+  getAll: () => runOnDoors(table => table.coerceTo('array')),
+  delete: (id) => runOnDoors(table => table.get(id).delete()),
+  getStatus: (id) => runOnDoors(table => table.get(id))
+};
 
 export default {
   createDoor: (door) => tableActions.createDoor(door),
-  updateStatus: (id, status) => {
-
-  },
+  updateStatus: (id, status) => {  },
   deleteDoor: (id) => tableActions.delete(id),
   getAll: () => tableActions.getAll(),
   getStatuses: () =>{
@@ -41,5 +32,7 @@ export default {
       }
     })
   },
-  delete: (id) => tableActions.delete(id)
+  getStatus: (id) => tableActions.getStatus(id)
+    .then(d => { status: d.status }),
+  delete: (id) => tableActions.delete(id),
 }
