@@ -9,11 +9,12 @@ export default {
   config:{
     description: 'The webhook for the partical core/photon/electron to call',
     tags: ['api', 'webhooks', 'particle'],
-    pre: [ auth ],
-    validate: { headers },
+    // pre: [ auth ],
+    // validate: { headers },
     response
   },
   handler: (req, res) => {
+    req.server.log(req.payload)
     return res({
       bodybody: 'OH YEAH?',
       payload: 'req.payload'
