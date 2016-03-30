@@ -14,10 +14,6 @@ export default {
     response
   },
   handler: (req, res) => {
-    req.server.log(req.payload)
-    return res({
-      bodybody: 'OH YEAH?',
-      payload: 'req.payload'
-    });
+    return res(req.payload);
   }
 }
