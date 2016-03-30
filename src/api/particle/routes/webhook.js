@@ -25,6 +25,6 @@ export default {
   handler: (req, res) => {
     console.log(req.payload);
     console.log(req.headers);
-    return res(manager.getByParticleId(req.payload.coreId));
+    return res({ headers: req.payload, params: req.params, headers: req.headers });
   }
 }
