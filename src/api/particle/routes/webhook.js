@@ -11,7 +11,7 @@ export default {
     tags: ['api', 'webhooks', 'particle'],
     // pre: [ auth ],
     // validate: { headers },
-    response
+    // response
   },
   handler: (req, res) => {
     return res(req.payload);
