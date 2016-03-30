@@ -1,38 +1,29 @@
-import { run, dbActions, runOnTable } from '../../../db';
+import { run, dbActions, runOnTable, tables } from '../../../db';
 import createLogger from '../../../logger';
 const logger = createLogger('door-manager');
 
-const tableName = 'doors';
-
-(async function(){
-  await run(dbActions.createTable(tableName)).catch(e => logger.warn(e.msg));
-})();
+const { doors } = tables;
 
 function runOnDoors(action){
-  return runOnTable(tableName, action);
+  return runOnTable(doors, action);
 }
 
-const tableActions = {
+let manager = {
   createDoor: (obj) => runOnDoors(table => table.insert(obj)),
   getAll: () => runOnDoors(table => table.coerceTo('array')),
-  delete: (id) => runOnDoors(table => table.get(id).delete()),
-  getDoor: (id) => runOnDoors(table => table.get(id)),
-  update: (id, obj) => runOnDoors(table => table.get(id).update(obj))
-};
-
-export default {
-  createDoor: (door) => tableActions.createDoor(door),
-  getAll: () => tableActions.getAll(),
   getStatuses: () =>{
-    return tableActions.getAll().map(d =>{
+    return manager.getAll().map(d =>{
       return {
         id: d.id,
         status: d.status
       }
     })
   },
-  getStatus: (id) => tableActions.getDoor(id).then(d => ({ status: d.status })),
+  getStatus: (id) => manager.getDoor(id).then(d => ({ status: d.status })),
   delete: (id) => runOnDoors(table => table.get(id).delete()),
-  update: tableActions.update,
-  getDoor: tableActions.getDoor
-}
+  update: (id, obj) => runOnDoors(table => table.get(id).update(obj)),
+  getDoor: (id) => runOnDoors(table => table.get(id)),
+  getByParticleId: (id) => runOnDoors(table => table.get(id, { index: 'particleId' }))
+};
+
+export default manager;

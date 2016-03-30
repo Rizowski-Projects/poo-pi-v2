@@ -13,6 +13,10 @@ let dbActions = {
   createTable: (name) => rethink.tableCreate(name)
 };
 
+const tables = {
+  doors: 'doors'
+}
+
 let runOnTable = runOn('table');
 
 function run(action){
@@ -30,7 +34,8 @@ function printError(e){
 export default async (s) =>{
   connection = await rethink.connect({ host: process.env.DB_HOST, port: process.env.DB_PORT }).catch(printError);
   await run(dbActions.createDb(dbName)).catch((e) => logger.warn(e.msg));
+  await run(dbActions.createTable(tables.doors)).catch(e => logger.warn(e.msg));
   return s;
 };
 
-export { run, dbActions, runOnTable };
+export { run, dbActions, runOnTable, tables };
