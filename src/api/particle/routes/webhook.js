@@ -15,14 +15,16 @@ export default {
   config:{
     description: 'The webhook for the partical core/photon/electron to call',
     tags: ['api', 'webhooks', 'particle'],
-    pre: [ auth ],
+    // pre: [ auth ],
     validate: {
-      headers,
-      payload
+      // headers,
+      // payload
     },
     // response
   },
   handler: (req, res) => {
+    console.log(req.payload);
+    console.log(req.headers);
     return res(manager.getByParticleId(req.payload.coreId));
   }
 }
