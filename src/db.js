@@ -10,7 +10,7 @@ let connection;
 
 let dbActions = {
   createDb: (name) => rethink.dbCreate(name),
-  createTable: (name) => rethink.tableCreate(name)
+  createTable: (name, options) => rethink.tableCreate(name, options)
 };
 
 const tables = {
@@ -34,7 +34,8 @@ function printError(e){
 export default async (s) =>{
   connection = await rethink.connect({ host: process.env.DB_HOST, port: process.env.DB_PORT }).catch(printError);
   await run(dbActions.createDb(dbName)).catch((e) => logger.warn(e.msg));
-  await run(dbActions.createTable(tables.doors)).catch(e => logger.warn(e.msg));
+  await run(dbActions.createTable(tables.doors, { primaryKey: 'particleId' })).catch(e => logger.warn(e.msg));
+  // await runOnTable('doors', table => table.indexCreate('particleId')).catch(e => logger.warn(e.msg));
   return s;
 };
 

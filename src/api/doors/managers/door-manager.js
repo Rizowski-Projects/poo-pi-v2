@@ -1,6 +1,7 @@
 import { run, dbActions, runOnTable, tables } from '../../../db';
 import createLogger from '../../../logger';
 const logger = createLogger('door-manager');
+import _ from 'lodash';
 
 const { doors } = tables;
 
@@ -15,15 +16,25 @@ let manager = {
     return manager.getAll().map(d =>{
       return {
         id: d.id,
-        status: d.status
+        open: d.open
       }
     })
   },
-  getStatus: (id) => manager.getDoor(id).then(d => ({ status: d.status })),
+  getStatus: (id) => manager.getDoor(id).then(d => ({ open: d.open })),
   delete: (id) => runOnDoors(table => table.get(id).delete()),
   update: (id, obj) => runOnDoors(table => table.get(id).update(obj)),
   getDoor: (id) => runOnDoors(table => table.get(id)),
-  getByParticleId: (id) => runOnDoors(table => table.get(id, { index: 'particleId' }))
+  getByParticleId: (id) => {
+    return runOnDoors(table => table.getAll(id, { index: 'particleId' }).coerceTo('array'))
+      .then(result => {
+        if(_.isEmpty(result)){
+          return {};
+        }
+        if(result.length > 0){
+          return result[0];
+        }
+      });
+  }
 };
 
 export default manager;

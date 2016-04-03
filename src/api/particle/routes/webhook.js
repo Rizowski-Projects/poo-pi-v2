@@ -23,8 +23,12 @@ export default {
     // response
   },
   handler: (req, res) => {
-    console.log(req.payload);
-    console.log(req.headers);
-    return res({ headers: req.payload, params: req.params, headers: req.headers });
+    const hookData = req.payload;
+    const result = manager.update(hookData.coreid, { open: hookData.data.open })
+      .then(d =>{
+        console.log(d);
+        return d;
+      });
+    return res(result);
   }
 }

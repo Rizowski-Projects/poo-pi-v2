@@ -4,7 +4,9 @@ import joi from 'joi';
 
 export default joi.object({
   event: joi.string(),
-  data: joi.object(),
+  data: joi.object({
+    open: joi.boolean()
+  }),
   'published_at': joi.date(),
   coreid: joi.string() // deviceId
 }).label('eventData')

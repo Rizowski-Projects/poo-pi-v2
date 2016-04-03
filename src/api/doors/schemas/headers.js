@@ -1,5 +1,5 @@
 import joi from 'joi';
 
 export default joi.object({
-  authorization: joi.string().guid()
+  Authorization: joi.string().guid()
 }).unknown(true).label('headers');
