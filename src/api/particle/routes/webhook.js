@@ -15,10 +15,10 @@ export default {
   config:{
     description: 'The webhook for the partical core/photon/electron to call',
     tags: ['api', 'webhooks', 'particle'],
-    // pre: [ auth ],
+    pre: [ auth ],
     validate: {
-      // headers,
-      // payload
+      headers,
+      payload
     },
     // response
   },

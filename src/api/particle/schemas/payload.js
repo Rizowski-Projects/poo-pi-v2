@@ -4,7 +4,12 @@ import joi from 'joi';
 
 export default joi.object({
   event: joi.string(),
-  data: joi.any(),
+  data: joi.object(),
   'published_at': joi.date(),
   coreid: joi.string() // deviceId
 }).label('eventData')
+
+// { event: 'female_door_action',
+// data: 'null',
+// published_at: '2016-04-03T03:40:04.624Z',
+// coreid: '300035000a47343432313031' }

@@ -1,0 +1,9 @@
+{
+  "eventName": "poopi_door_",
+  "url": "https://my-host/particle/webhook",
+  "requestType": "POST",
+  "headers": {
+    "Authorization": "Bearer 12345"
+  },
+  "mydevices": true
+}
