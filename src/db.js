@@ -17,6 +17,10 @@ const tables = {
   doors: 'doors'
 }
 
+function print(type){
+  return (e) => logger[type](e.msg);
+}
+
 let runOnTable = runOn('table');
 
 function run(action){
@@ -27,14 +31,10 @@ function runOn(entity) {
   return (entityName, action) => run(action(rethink[entity](entityName)));
 }
 
-function printError(e){
-  logger.error(e.msg);
-}
-
 export default async (s) =>{
-  connection = await rethink.connect({ host: process.env.DB_HOST, port: process.env.DB_PORT }).catch(printError);
-  await run(dbActions.createDb(dbName)).catch((e) => logger.warn(e.msg));
-  await run(dbActions.createTable(tables.doors, { primaryKey: 'particleId' })).catch(e => logger.warn(e.msg));
+  connection = await rethink.connect({ host: process.env.DB_HOST, port: process.env.DB_PORT }).catch(print('error'));
+  await run(dbActions.createDb(dbName)).catch(print('warn'));
+  await run(dbActions.createTable(tables.doors, { primaryKey: 'particleId' })).catch(print('warn'));
   // await runOnTable('doors', table => table.indexCreate('particleId')).catch(e => logger.warn(e.msg));
   return s;
 };
