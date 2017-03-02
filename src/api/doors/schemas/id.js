@@ -1,3 +1,3 @@
-import joi from 'joi';
+import short from './shortId';
 
-export default joi.string().guid().label('id');
+export default short.label('id');

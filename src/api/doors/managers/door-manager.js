@@ -1,39 +1,63 @@
-import { run, dbActions, runOnTable, tables } from '../../../db';
+import { doors } from '../../../db';
 import createLogger from '../../../logger';
+import shortId from 'shortid';
 const logger = createLogger('door-manager');
 import _ from 'lodash';
+import boom from 'boom';
 
-const { doors } = tables;
-
-function runOnDoors(action){
-  return runOnTable(doors, action);
+function fixId(door){
+  let obj = _.omit(door, '_id');
+  obj.id = door['_id'];
+  return obj;
 }
 
 let manager = {
-  createDoor: (obj) => runOnDoors(table => table.insert(obj)),
-  getAll: () => runOnDoors(table => table.coerceTo('array')),
-  getStatuses: () =>{
-    return manager.getAll().map(d =>{
-      return {
-        id: d.id,
-        open: d.open
-      }
+  createDoor: (obj) => {
+    return doors.findOneAsync({
+      name: obj.name,
+      particleId: obj.particleId
     })
+    .then((result) =>{
+      if(result){
+        throw boom.conflict(`Door already exists with ParticleId: ${obj.particleId} and name ${obj.name}`, obj);
+      }
+      obj['_id'] = shortId.generate();
+      return doors.insertAsync(obj);
+    })
+    .then((result) =>{
+      logger.info(result);
+    });
   },
-  getStatus: (id) => manager.getDoor(id).then(d => ({ open: d.open })),
-  delete: (id) => runOnDoors(table => table.get(id).delete()),
-  update: (id, obj) => runOnDoors(table => table.get(id).update(obj)),
-  getDoor: (id) => runOnDoors(table => table.get(id)),
-  getByParticleId: (id) => {
-    return runOnDoors(table => table.getAll(id, { index: 'particleId' }).coerceTo('array'))
-      .then(result => {
-        if(_.isEmpty(result)){
-          return {};
+  getAll: () => {
+    return doors.findAsync({})
+      .then((results) => _.map(results, fixId));
+  },
+  getStatus: (id) => manager.getDoor(id)
+    .then((door) => ({ status: door.status })),
+  delete: (id) => {
+    return doors.removeAsync({ _id: id }, true);
+  },
+  update: (id, obj) => {
+    return doors.findAndModifyAsync({
+      query: { _id: id },
+      update: { $set: obj }
+    })
+    .then(fixId);
+  },
+  getDoor: (id) => {
+    return doors.findOneAsync({ id })
+      .then((result) =>{
+        if(!result){
+          throw boom.conflict(`Door does not exist with id: ${id}`);
         }
-        if(result.length > 0){
-          return result[0];
-        }
+        let obj = _.omit(result, '_id');
+        obj.id = result['_id'];
+        return obj;
       });
+  },
+  getByParticleId: (particleId) => {
+    return doors.findOneAsync({ particleId })
+      .then(fixId);
   }
 };
 

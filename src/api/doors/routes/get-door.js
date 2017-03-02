@@ -18,4 +18,4 @@ export default {
     const door = manager.getDoor(req.params.id);
     return res(door);
   }
-}
+};

@@ -1,42 +1,32 @@
-import rethink from 'rethinkdb';
+import Mongo from 'mongojs';
 import createLogger from './logger';
-import _ from 'lodash';
+import Promise from 'bluebird';
 
 import './env';
 
-let logger = createLogger('db');
-let dbName = process.env.DB_DB;
-let connection;
+Promise.promisifyAll([
+  require('mongojs/lib/collection'),
+  require('mongojs/lib/database'),
+  require('mongojs/lib/cursor')
+]);
 
-let dbActions = {
-  createDb: (name) => rethink.dbCreate(name),
-  createTable: (name, options) => rethink.tableCreate(name, options)
+const logger = createLogger('db');
+const uri = process.env.DB_URI;
+const collections = ['doors'];
+
+logger.info(`Connecting to ${uri}`);
+const db = Mongo(uri, collections);
+
+db.on('connect', () =>{
+  logger.info('Connected');
+});
+
+db.on('error', (e) =>{
+  logger.error(e);
+});
+
+const doors = db.doors;
+
+export default {
+  db, doors
 };
-
-const tables = {
-  doors: 'doors'
-}
-
-function print(type){
-  return (e) => logger[type](e.msg);
-}
-
-let runOnTable = runOn('table');
-
-function run(action){
-  return action.run(connection);
-}
-
-function runOn(entity) {
-  return (entityName, action) => run(action(rethink[entity](entityName)));
-}
-
-export default async (s) =>{
-  connection = await rethink.connect({ host: process.env.DB_HOST, port: process.env.DB_PORT }).catch(print('error'));
-  await run(dbActions.createDb(dbName)).catch(print('warn'));
-  await run(dbActions.createTable(tables.doors, { primaryKey: 'particleId' })).catch(print('warn'));
-  // await runOnTable('doors', table => table.indexCreate('particleId')).catch(e => logger.warn(e.msg));
-  return s;
-};
-
-export { run, dbActions, runOnTable, tables };

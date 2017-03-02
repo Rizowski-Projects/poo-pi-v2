@@ -6,6 +6,7 @@ export default {
   method: (req, next) =>{
     let auth = req.headers.authorization;
     let savedAuth = process.env.CRUD_AUTH;
+    console.log(auth, savedAuth);
     if(!savedAuth){
       return next(boom.unauthorized());
     }

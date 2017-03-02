@@ -12,4 +12,4 @@ export default {
     const response = manager.getAll();
     return res(response);
   }
-}
+};

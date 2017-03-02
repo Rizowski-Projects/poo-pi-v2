@@ -1,4 +1,6 @@
 {
-  "presets": ["es2015-node4", "stage-3"],
-  "plugins" : ["add-module-exports", "bluebird-async-functions"]
+  "plugins": ["add-module-exports", "bluebird-async-functions"],
+  "presets": [
+    ["env", { "targets": { "node": 4 } }]
+  ]
 }
