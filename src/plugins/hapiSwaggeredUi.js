@@ -14,7 +14,7 @@ export default {
     },
     authorization: {
       scope: 'header',
-      field: 'api-key',
+      field: 'Authorization',
       defaultValue: key
     }
   }

@@ -2,6 +2,7 @@ require('babel-polyfill');
 try {
   require('source-map-support');
 } catch (e) { }
+import './env';
 import { Server } from 'hapi';
 import Good from 'good';
 import path from 'path';
