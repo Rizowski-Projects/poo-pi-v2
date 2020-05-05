@@ -6,11 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel -d build src -s inline",
-    "prepublish": "npm run build",
+    "prepublish": "npm run snyk-protect && npm run build",
     "prestart": "rm -rf build && npm run build",
     "start": "node index.js | bunyan",
     "predev": "NODE_ENV=local npm run prestart",
-    "dev": "NODE_ENV=local node index.js | bunyan"
+    "dev": "NODE_ENV=local node index.js | bunyan",
+    "snyk-protect": "snyk protect"
   },
   "engines": {
     "node": ">=4"
@@ -71,6 +72,8 @@
     "mod.js": "^1.0.4",
     "moment": "^2.11.2",
     "rethinkdb": "^2.2.2",
-    "vision": "^4.0.1"
-  }
+    "vision": "^4.0.1",
+    "snyk": "^1.319.0"
+  },
+  "snyk": true
 }
