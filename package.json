@@ -57,7 +57,7 @@
     "blipp": "^2.3.0",
     "bluebird": "^3.3.4",
     "bunyan": "^1.7.1",
-    "chalk": "^1.1.1",
+    "chalk": "^2.0.0",
     "good": "^6.6.0",
     "good-bunyan": "^0.1.2",
     "good-console": "^5.3.1",
